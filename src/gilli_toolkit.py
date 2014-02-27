@@ -38,4 +38,6 @@ if __name__ == '__main__':
         JsonTools().pretty(argv[3:])
     else:
         print "Usage: gilli [options]"
-        print "    json valid? [files]"
+        print "\nJSON:"
+        print "    json valid? [files] - validate some json files"
+        print "    json pretty [files] - pretty print some json files"
