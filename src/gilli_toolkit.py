@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 from sys import argv
-from os import system
+from os import system, popen
 import json
+import re
 
 class JsonTools(object):
     def are_valid(self, files):
@@ -31,13 +32,35 @@ class JsonTools(object):
                 print eval(json.dumps(f.read(), sort_keys=True, indent=4, separators=(',', ': ')))
 
 class Directory(object):
-    def find_and_replace(self, args):
-        directory = args[2]
-        file_extension = args[3]
-        to_replace = args[4]
-        replacement = args[5]
+    def __init__(self, args):
+        self.directory = args[2]
+        self.file_extension = args[3]
+        self.args = args[4:]
 
-        system('find ' + directory + ' -name "*.' + file_extension +'" | xargs sed -i "s/' + to_replace + '/' + replacement + '/g"')
+    def find_and_replace(self):
+        system(self.find_command() + ' | xargs sed -i "s/' + self.args[0] + '/' + self.args[1] + '/g"')
+
+    def find_line_numbers(self):
+        findings = [i for i in popen(self.find_command() + ' | xargs grep -n "' + self.args[0] + '"' ).read().split() if i]
+
+        results = {}
+
+        for line in findings:
+            search_object = re.search('^(.+):(\d+):', line)
+            if not search_object: continue
+
+            file, number = search_object.group(1), int(search_object.group(2))
+            
+            if file in results:
+                results[file].append(number)
+            else:
+                results[file] = [number]
+
+            for result in results:
+                print result, ':', str(results[result])
+        
+    def find_command(self):
+        return 'find ' + self.directory + ' -name "*.' + self.file_extension +'"'
 
 if __name__ == '__main__':
     if argv[1:3] == ['json', 'valid?']:
@@ -48,7 +71,10 @@ if __name__ == '__main__':
         JsonTools().pretty(argv[3:])
     elif argv[1] == 'far':
         print "At '" + argv[2] + "' in files '" + argv[3] + "':", argv[4], " -> ", argv[5]
-        Directory().find_and_replace(argv)
+        Directory(argv).find_and_replace()
+    elif argv[1] == 'fl':
+        print "At '" + argv[2] + "' in files '" + argv[3] + "' finding:", argv[4]
+        Directory(argv).find_line_numbers()
     else:
         print "Usage: gilli [options]"
         print "\nJSON:"
