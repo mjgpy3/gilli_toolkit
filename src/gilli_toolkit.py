@@ -56,8 +56,8 @@ class Directory(object):
             else:
                 results[file] = [number]
 
-            for result in results:
-                print result, ':', str(results[result])
+        for result in results:
+            print result, ':', str(results[result])
         
     def find_command(self):
         return 'find ' + self.directory + ' -name "*.' + self.file_extension +'"'
