@@ -69,10 +69,10 @@ if __name__ == '__main__':
     elif argv[1:3] == ['json', 'pretty']:
         print "Prettying json", str(argv[3:]), '\n'
         JsonTools().pretty(argv[3:])
-    elif argv[1] == 'far':
+    elif argv[1:2] == ['far']:
         print "At '" + argv[2] + "' in files '" + argv[3] + "':", argv[4], " -> ", argv[5]
         Directory(argv).find_and_replace()
-    elif argv[1] == 'fl':
+    elif argv[1:2] == ['fl']:
         print "At '" + argv[2] + "' in files '" + argv[3] + "' finding:", argv[4]
         Directory(argv).find_line_numbers()
     else:
