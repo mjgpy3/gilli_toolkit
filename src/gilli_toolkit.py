@@ -41,7 +41,7 @@ class Directory(object):
         system(self.find_command() + ' | xargs sed -i "s/' + self.args[0] + '/' + self.args[1] + '/g"')
 
     def find_line_numbers(self):
-        findings = [i for i in popen(self.find_command() + ' | xargs grep -n "' + self.args[0] + '"' ).read().split() if i]
+        findings = [i for i in popen(self.find_command() + ' | xargs grep -Hn "' + self.args[0] + '"' ).read().split() if i]
 
         results = {}
 
@@ -50,7 +50,7 @@ class Directory(object):
             if not search_object: continue
 
             file, number = search_object.group(1), int(search_object.group(2))
-            
+
             if file in results:
                 results[file].append(number)
             else:
@@ -58,7 +58,7 @@ class Directory(object):
 
         for result in results:
             print result, ':', str(results[result])
-        
+
     def find_command(self):
         return 'find ' + self.directory + ' -name "*.' + self.file_extension +'"'
 
@@ -80,5 +80,7 @@ if __name__ == '__main__':
         print "\nJSON:"
         print "    json valid? [files] - validate some json files"
         print "    json pretty [files] - pretty print some json files"
-        print "\nDirectories"
+        print "\nDirectories:"
+        print "    fl [dir] [extension] [text]       - recursively find line numbers containing text"
         print "    far [dir] [extension] [old] [new] - recursively find and replace"
+
