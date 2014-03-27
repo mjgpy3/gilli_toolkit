@@ -29,7 +29,7 @@ class JsonTools(object):
                 continue
 
             with open(file, 'r') as f:
-                print eval(json.dumps(f.read(), sort_keys=True, indent=4, separators=(',', ': ')))
+                print json.dumps(f.read(), sort_keys=True, indent=4, separators=(',', ': '))
 
 class Directory(object):
     def __init__(self, args):
@@ -73,6 +73,9 @@ class Git(object):
     def commit_with_message(self):
         system('git commit -m "' + self.args[0] + '"')
 
+    def list_all_branches(self):
+        system('git branch -a')
+
     def execute_command(self):
         if self.command == 'a':
             self.add_all()
@@ -81,6 +84,8 @@ class Git(object):
         elif self.command == 'ac':
             self.add_all()
             self.commit_with_message()
+        elif self.command == 'ba':
+            self.list_all_branches()
         else:
             print "Unknown git command '" + self.command +"'"
 
@@ -111,5 +116,6 @@ if __name__ == '__main__':
         print "    g a            - git add -A"
         print "    g c [message]  - git commit -m \"[message]\""
         print "    g ac [message] - git add -A; git commit -m \"[message]\""
+        print "    g ba           - git branch -a"
         print
 
