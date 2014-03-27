@@ -62,6 +62,23 @@ class Directory(object):
     def find_command(self):
         return 'find ' + self.directory + ' -name "*.' + self.file_extension +'"'
 
+class Git(object):
+    def __init__(self, args):
+        self.command = args[2]
+        self.args = args[3:]
+
+    def add_all(self):
+        system('git add -A')
+
+    def commit_with_message(self):
+        system('git commit -m "' + self.args[0] + '"')
+
+    def execute_command(self):
+        if self.command == 'a':
+            self.add_all()
+        elif self.command == 'c':
+            self.commit_with_message()
+
 if __name__ == '__main__':
     if argv[1:3] == ['json', 'valid?']:
         print "Validating json for", str(argv[3:]), '\n'
@@ -75,6 +92,8 @@ if __name__ == '__main__':
     elif argv[1:2] == ['fl']:
         print "At '" + argv[2] + "' in files '" + argv[3] + "' finding:", argv[4]
         Directory(argv).find_line_numbers()
+    elif argv[1:2] == ['g']:
+        Git(argv).execute_command()
     else:
         print "Usage: gilli [options]"
         print "\nJSON:"
@@ -83,4 +102,7 @@ if __name__ == '__main__':
         print "\nDirectories:"
         print "    fl [dir] [extension] [text]       - recursively find line numbers containing text"
         print "    far [dir] [extension] [old] [new] - recursively find and replace"
+        print "\nGit:"
+        print "    g a - git add -A"
+        print "    g c [message]  - git commit \"[message]\""
 
