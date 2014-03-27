@@ -85,11 +85,16 @@ class Git(object):
     def gitg_in_background(self):
         system('gitg &')
 
+    def amend_commit(self):
+        system('git commit --amend')
+
     def execute_command(self):
         if self.command == 'a':
             self.add_all()
         elif self.command == 'c':
             self.commit_with_message()
+        elif self.command == 'cam':
+            self.amend_commit()
         elif self.command == 'ac':
             self.add_all()
             self.commit_with_message()
@@ -130,6 +135,7 @@ if __name__ == '__main__':
         print "\nGit:"
         print "    g a            - git add -A"
         print "    g c [message]  - git commit -m \"[message]\""
+        print "    g cam          - git commit --amend"
         print "    g ac [message] - git add -A; git commit -m \"[message]\""
         print "    g ba           - git branch -a"
         print "    g bc           - git rev-parse --abbrev-ref HEAD (show current branch)"
