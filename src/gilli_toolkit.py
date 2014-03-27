@@ -78,6 +78,11 @@ class Git(object):
             self.add_all()
         elif self.command == 'c':
             self.commit_with_message()
+        elif self.command == 'ac':
+            self.add_all()
+            self.commit_with_message()
+        else:
+            print "Unknown git command '" + self.command +"'"
 
 if __name__ == '__main__':
     if argv[1:3] == ['json', 'valid?']:
@@ -103,6 +108,8 @@ if __name__ == '__main__':
         print "    fl [dir] [extension] [text]       - recursively find line numbers containing text"
         print "    far [dir] [extension] [old] [new] - recursively find and replace"
         print "\nGit:"
-        print "    g a - git add -A"
-        print "    g c [message]  - git commit \"[message]\""
+        print "    g a            - git add -A"
+        print "    g c [message]  - git commit -m \"[message]\""
+        print "    g ac [message] - git add -A; git commit -m \"[message]\""
+        print
 
