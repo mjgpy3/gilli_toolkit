@@ -79,6 +79,9 @@ class Git(object):
     def show_current_branch(self):
         system('git rev-parse --abbrev-ref HEAD')
 
+    def status(self):
+        system('git status')
+
     def execute_command(self):
         if self.command == 'a':
             self.add_all()
@@ -91,6 +94,8 @@ class Git(object):
             self.list_all_branches()
         elif self.command == 'bc':
             self.show_current_branch()
+        elif self.command == 's':
+            self.status()
         else:
             print "Unknown git command '" + self.command +"'"
 
@@ -123,5 +128,6 @@ if __name__ == '__main__':
         print "    g ac [message] - git add -A; git commit -m \"[message]\""
         print "    g ba           - git branch -a"
         print "    g bc           - git rev-parse --abbrev-ref HEAD (show current branch)"
+        print "    g s            - git status"
         print
 
