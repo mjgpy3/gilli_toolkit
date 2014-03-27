@@ -73,6 +73,9 @@ class Git(object):
     def commit_with_message(self):
         system('git commit -m "' + self.args[0] + '"')
 
+    def checkout(self):
+        system('git checkout ' + self.args[0])
+
     def list_all_branches(self):
         system('git branch -a')
 
@@ -106,6 +109,8 @@ class Git(object):
             self.status()
         elif self.command == 'g':
             self.gitg_in_background()
+        elif self.command == 'o':
+            self.checkout()
         else:
             print "Unknown git command '" + self.command +"'"
 
@@ -141,5 +146,6 @@ if __name__ == '__main__':
         print "    g bc           - git rev-parse --abbrev-ref HEAD (show current branch)"
         print "    g s            - git status"
         print "    g g            - gitg &"
+        print "    g o [branch]   - git checkout [branch]"
         print
 
